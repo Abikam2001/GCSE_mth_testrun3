@@ -386,7 +386,6 @@
                             </defs>
                             
                             <!-- Gridlines for x in [-6, 6] and y in [-5, 5] -->
-                            <!-- Vertical Grid Lines (step = 25px) -->
                             <line x1="30" y1="25" x2="30" y2="275" stroke="#e2e8f0" stroke-width="1"/>
                             <line x1="55" y1="25" x2="55" y2="275" stroke="#e2e8f0" stroke-width="1"/>
                             <line x1="80" y1="25" x2="80" y2="275" stroke="#e2e8f0" stroke-width="1"/>
@@ -400,7 +399,6 @@
                             <line x1="305" y1="25" x2="305" y2="275" stroke="#e2e8f0" stroke-width="1"/>
                             <line x1="330" y1="25" x2="330" y2="275" stroke="#e2e8f0" stroke-width="1"/>
 
-                            <!-- Horizontal Grid Lines (step = 25px) -->
                             <line x1="30" y1="25" x2="330" y2="25" stroke="#e2e8f0" stroke-width="1"/>
                             <line x1="30" y1="50" x2="330" y2="50" stroke="#e2e8f0" stroke-width="1"/>
                             <line x1="30" y1="75" x2="330" y2="75" stroke="#e2e8f0" stroke-width="1"/>
@@ -413,11 +411,9 @@
                             <line x1="30" y1="275" x2="330" y2="275" stroke="#e2e8f0" stroke-width="1"/>
 
                             <!-- Main Axes -->
-                            <!-- X Axis -->
                             <line x1="15" y1="150" x2="348" y2="150" stroke="#1e293b" stroke-width="2" marker-end="url(#arrow)"/>
                             <text x="350" y="154" font-size="13" font-weight="bold" fill="#1e293b" font-style="italic">x</text>
 
-                            <!-- Y Axis -->
                             <line x1="180" y1="285" x2="180" y2="12" stroke="#1e293b" stroke-width="2" marker-end="url(#arrow)"/>
                             <text x="176" y="8" font-size="13" font-weight="bold" fill="#1e293b" font-style="italic">y</text>
 
@@ -452,25 +448,25 @@
                             <text x="162" y="254" font-size="10" font-weight="bold" fill="#475569">-4</text>
                             <text x="162" y="279" font-size="10" font-weight="bold" fill="#475569">-5</text>
 
-                            <!-- Plotted Cross A(-2, 1) -> SVG (130, 125) -->
-                            <line x1="125" y1="120" x2="135" y2="130" stroke="#dc2626" stroke-width="2.5"/>
-                            <line x1="125" y1="130" x2="135" y2="120" stroke="#dc2626" stroke-width="2.5"/>
+                            <!-- Cross A(-2, 1) -->
+                            <line x1="125" y1="120" x2="135" y2="130" stroke="#005a9c" stroke-width="2.5"/>
+                            <line x1="125" y1="130" x2="135" y2="120" stroke="#005a9c" stroke-width="2.5"/>
                             <text x="115" y="118" font-size="13" font-weight="black" fill="#005a9c">A</text>
 
-                            <!-- Plotted Cross B(-1, -2) -> SVG (155, 200) -->
-                            <line x1="150" y1="195" x2="160" y2="205" stroke="#dc2626" stroke-width="2.5"/>
-                            <line x1="150" y1="205" x2="160" y2="195" stroke="#dc2626" stroke-width="2.5"/>
+                            <!-- Cross B(-1, -2) -->
+                            <line x1="150" y1="195" x2="160" y2="205" stroke="#005a9c" stroke-width="2.5"/>
+                            <line x1="150" y1="205" x2="160" y2="195" stroke="#005a9c" stroke-width="2.5"/>
                             <text x="140" y="215" font-size="13" font-weight="black" fill="#005a9c">B</text>
 
-                            <!-- Plotted Cross C(2, -1) -> SVG (230, 175) -->
-                            <line x1="225" y1="170" x2="235" y2="180" stroke="#dc2626" stroke-width="2.5"/>
-                            <line x1="225" y1="180" x2="235" y2="170" stroke="#dc2626" stroke-width="2.5"/>
+                            <!-- Cross C(2, -1) -->
+                            <line x1="225" y1="170" x2="235" y2="180" stroke="#005a9c" stroke-width="2.5"/>
+                            <line x1="225" y1="180" x2="235" y2="170" stroke="#005a9c" stroke-width="2.5"/>
                             <text x="240" y="185" font-size="13" font-weight="black" fill="#005a9c">C</text>
                         </svg>
                     </div>
                     <p><strong>(a)</strong> Write down the coordinates of point $A$.<br>
-                    <strong>(b)</strong> On the grid, find the point $D$ so that $ABCD$ is a square.<br>
-                    <strong>(c)</strong> On the grid, find the point $E$ so that $C$ is the midpoint of $BE$.</p>
+                    <strong>(b)</strong> On the grid, mark with a cross ($\times$) the point $D$ so that $ABCD$ is a square. Label this point $D$.<br>
+                    <strong>(c)</strong> On the grid, mark with a cross ($\times$) the point $E$ so that $C$ is the midpoint of $BE$. Label this point $E$.</p>
                 `, 
                 pattern: /\(-2\s*,\s*1\).*\(1\s*,\s*2\).*\(5\s*,\s*0\)|-2.*1.*1.*2.*5.*0/i, 
                 solution: "(a) (-2, 1), (b) D(1, 2), (c) E(5, 0)" 
@@ -480,26 +476,54 @@
             { id: 11, strand: "Geometry & Measures", topic: "Units Conversion & Heights", marks: 2, questionText: "<p>Elena's height is $136\\text{ cm}$. George's height is $1.2\\text{ metres}$.<br>Elena's height is greater than George's height. How many centimetres greater?</p>", pattern: /^16$|16\s*cm/i, solution: "16 cm (1.2m = 120cm; 136 - 120 = 16cm)" },
             { id: 12, strand: "Algebra", topic: "Sequences & n-th Term", marks: 3, questionText: "<p><strong>(a)</strong> The $n$-th term of a sequence is $4n - 1$. Work out the 3rd term.<br><strong>(b)</strong> Here are the first 4 terms of another sequence: $9, 15, 21, 27$. Is 63 in this sequence? Give a reason.</p>", pattern: /11.*yes|11.*10th/i, solution: "(a) 11, (b) Yes, 63 is the 10th term (rule: 6n + 3)" },
 
-            // QUESTION 13: QUADRILATERAL & ANGLES SVG
+            // QUESTION 13: FIXED QUADRILATERAL & INTERSECTING LINES DIAGRAM
             { 
                 id: 13, 
                 strand: "Geometry & Measures", 
                 topic: "Angles in Quadrilaterals & Straight Lines", 
                 marks: 4, 
                 questionText: `
-                    <p>$ABCD$ is a quadrilateral. $BCF$ and $DCE$ are straight lines.</p>
+                    <p class="mb-2">$ABCD$ is a quadrilateral. $BCF$ and $DCE$ are straight lines.</p>
                     <div class="my-4 flex justify-center">
-                        <svg width="320" height="200" viewBox="0 0 320 200" class="bg-slate-50 border border-slate-200 rounded-xl shadow-sm">
-                            <polygon points="40,160 40,80 160,50 280,160" fill="none" stroke="#005a9c" stroke-width="2.5"/>
-                            <line x1="160" y1="50" x2="310" y2="10" stroke="#dc2626" stroke-width="2"/>
-                            <line x1="280" y1="160" x2="100" y2="10" stroke="#dc2626" stroke-width="2"/>
-                            <rect x="40" y="145" width="15" height="15" fill="none" stroke="#005a9c" stroke-width="1.5"/>
-                            <text x="50" y="95" font-size="12" font-weight="bold" fill="#d97706">x</text>
-                            <text x="160" y="30" font-size="12" font-weight="bold" fill="#d97706">120°</text>
-                            <text x="250" y="150" font-size="12" font-weight="bold" fill="#d97706">45°</text>
+                        <svg width="340" height="220" viewBox="0 0 340 220" class="bg-white border border-slate-300 rounded-xl shadow-md">
+                            <!-- Quadrilateral ABCD -->
+                            <!-- A=(40, 180), B=(40, 100), C=(190, 60), D=(280, 180) -->
+                            <polygon points="40,180 40,100 190,60 280,180" fill="none" stroke="#005a9c" stroke-width="3" stroke-linejoin="round"/>
+
+                            <!-- Straight Line BCF extending beyond C to F -->
+                            <!-- Line from B(40,100) through C(190,60) to F(265,40) -->
+                            <line x1="40" y1="100" x2="280" y2="36" stroke="#005a9c" stroke-width="2.5"/>
+
+                            <!-- Straight Line DCE extending beyond C to E -->
+                            <!-- Line from D(280,180) through C(190,60) to E(130, 20) -->
+                            <line x1="280" y1="180" x2="115" y2="0" stroke="#005a9c" stroke-width="2.5"/>
+
+                            <!-- Right Angle Symbol at A -->
+                            <rect x="40" y="165" width="15" height="15" fill="none" stroke="#005a9c" stroke-width="2"/>
+
+                            <!-- Arc for Angle x at B -->
+                            <path d="M 40,125 A 25,25 0 0,0 60,105" fill="none" stroke="#d97706" stroke-width="2.5"/>
+                            <text x="50" y="125" font-size="15" font-weight="bold" fill="#d97706">x</text>
+
+                            <!-- Arc for 120° Angle ECF -->
+                            <path d="M 160,35 A 30,30 0 0,1 215,47" fill="none" stroke="#d97706" stroke-width="2.5"/>
+                            <text x="175" y="32" font-size="14" font-weight="bold" fill="#d97706">120°</text>
+
+                            <!-- Arc for 45° Angle ADC at D -->
+                            <path d="M 255,180 A 25,25 0 0,0 268,164" fill="none" stroke="#d97706" stroke-width="2.5"/>
+                            <text x="235" y="172" font-size="14" font-weight="bold" fill="#d97706">45°</text>
+
+                            <!-- Vertex Labels -->
+                            <text x="22" y="190" font-size="15" font-weight="black" fill="#1e293b">A</text>
+                            <text x="22" y="98" font-size="15" font-weight="black" fill="#1e293b">B</text>
+                            <text x="195" y="78" font-size="15" font-weight="black" fill="#1e293b">C</text>
+                            <text x="290" y="190" font-size="15" font-weight="black" fill="#1e293b">D</text>
+                            <text x="105" y="18" font-size="15" font-weight="black" fill="#1e293b">E</text>
+                            <text x="288" y="38" font-size="15" font-weight="black" fill="#1e293b">F</text>
                         </svg>
                     </div>
-                    <p>Work out the size of the angle marked $x$. Give reasons for each stage of your working.</p>
+                    <p>Work out the size of the angle marked $x$.</p>
+                    <p class="text-xs text-slate-500 italic">Give a reason for each stage of your working.</p>
                 `, 
                 pattern: /^105$|105^{\\circ}|105\s*deg/i, 
                 solution: "105° (Angle BCD = 120° vertically opposite; x = 360 - (90 + 45 + 120) = 105°)" 
@@ -585,30 +609,129 @@
             },
 
             { id: 18, strand: "Number", topic: "Percentages & Installments", marks: 3, questionText: "<p>Amy buys a car costing £12,000. She pays a 20% deposit and the rest in 24 equal monthly payments.<br>Amy says each monthly payment is less than £450. Is she correct?</p>", pattern: /yes.*400|correct.*400/i, solution: "Yes, Amy is correct (Deposit = £2,400; Remaining = £9,600; Monthly = £400)" },
-            { id: 19, strand: "Statistics", topic: "Averages from Frequency Tables", marks: 4, questionText: "<p>Katya recorded the number of people in 50 cars:<br>1 person (16), 2 people (15), 3 people (7), 4 people (9), 5 people (3).<br><strong>(a)</strong> Find the median number of people.<br><strong>(b)</strong> Work out the mean number of people.</p>", pattern: /2.*2\.36/i, solution: "(a) Median = 2, (b) Mean = 118 / 50 = 2.36" },
+            
+            // QUESTION 19: CAR FREQUENCY TABLE
+            { 
+                id: 19, 
+                strand: "Statistics", 
+                topic: "Averages from Frequency Tables", 
+                marks: 4, 
+                questionText: `
+                    <p class="mb-2">Katya counted the number of people in each of 50 cars.<br>The table gives information about her results.</p>
+                    <div class="my-4 flex justify-center">
+                        <table class="border-collapse border border-slate-400 bg-white shadow-sm text-sm text-center">
+                            <thead>
+                                <tr class="bg-slate-100 border-b border-slate-400">
+                                    <th class="border border-slate-400 px-8 py-2 font-bold text-slate-800">Number of people</th>
+                                    <th class="border border-slate-400 px-8 py-2 font-bold text-slate-800">Frequency</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td class="border border-slate-400 px-8 py-1.5 font-semibold text-slate-700">1</td><td class="border border-slate-400 px-8 py-1.5 text-slate-700">16</td></tr>
+                                <tr><td class="border border-slate-400 px-8 py-1.5 font-semibold text-slate-700">2</td><td class="border border-slate-400 px-8 py-1.5 text-slate-700">15</td></tr>
+                                <tr><td class="border border-slate-400 px-8 py-1.5 font-semibold text-slate-700">3</td><td class="border border-slate-400 px-8 py-1.5 text-slate-700">7</td></tr>
+                                <tr><td class="border border-slate-400 px-8 py-1.5 font-semibold text-slate-700">4</td><td class="border border-slate-400 px-8 py-1.5 text-slate-700">9</td></tr>
+                                <tr><td class="border border-slate-400 px-8 py-1.5 font-semibold text-slate-700">5</td><td class="border border-slate-400 px-8 py-1.5 text-slate-700">3</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p><strong>(a)</strong> Find the median number of people.<br>
+                    <strong>(b)</strong> Work out the mean number of people.</p>
+                `, 
+                pattern: /2.*2\.36/i, 
+                solution: "(a) Median = 2, (b) Mean = 118 / 50 = 2.36" 
+            },
+
             { id: 20, strand: "Number", topic: "Calculator Work & Significant Figures", marks: 3, questionText: "<p><strong>(a)</strong> Use your calculator to evaluate: $$\\dfrac{42.1 - 29.53}{9.82 + 37.6}$$<br>Write down all figures.<br><strong>(b)</strong> Give your answer to 2 significant figures.</p>", pattern: /0\.26507802615.*0\.27/i, solution: "(a) 0.26507802615..., (b) 0.27" },
             { id: 21, strand: "Algebra", topic: "Algebraic Powers & Expansion", marks: 5, questionText: "<p><strong>(a)</strong> Simplify $y^{10} \\div y^2$<br><strong>(b)</strong> Simplify $(e^3)^2$<br><strong>(c)</strong> Expand $x(3x^2 + 5)$<br><strong>(d)</strong> Expand and simplify $(n + 5)(n - 2)$</p>", pattern: /y\^8.*e\^6.*3x\^3\s*\+\s*5x.*n\^2\s*\+\s*3n\s*-\s*10/i, solution: "(a) y^8, (b) e^6, (c) 3x^3 + 5x, (d) n^2 + 3n - 10" },
 
-            // QUESTION 22: FREQUENCY POLYGON GRAPH
+            // QUESTION 22: FULL ACCURATE FREQUENCY POLYGON GRAPH
             { 
                 id: 22, 
                 strand: "Statistics", 
                 topic: "Frequency Polygons", 
                 marks: 2, 
                 questionText: `
-                    <p>The table shows travel distances for 60 people to work:<br>
-                    $0 < d \\le 10$ (12), $10 < d \\le 20$ (25), $20 < d \\le 30$ (10), $30 < d \\le 40$ (8), $40 < d \\le 50$ (5).</p>
+                    <p>The table shows information about the distances that 60 people travel to work.</p>
+                    <div class="my-3 flex justify-center">
+                        <table class="border-collapse border border-slate-400 bg-white shadow-sm text-sm text-center">
+                            <thead>
+                                <tr class="bg-slate-100 border-b border-slate-400">
+                                    <th class="border border-slate-400 px-6 py-1.5 font-bold text-slate-800">Distance ($d$ miles)</th>
+                                    <th class="border border-slate-400 px-6 py-1.5 font-bold text-slate-800">Frequency</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td class="border border-slate-400 px-6 py-1 text-slate-700">$0 < d \\le 10$</td><td class="border border-slate-400 px-6 py-1 text-slate-700">12</td></tr>
+                                <tr><td class="border border-slate-400 px-6 py-1 text-slate-700">$10 < d \\le 20$</td><td class="border border-slate-400 px-6 py-1 text-slate-700">25</td></tr>
+                                <tr><td class="border border-slate-400 px-6 py-1 text-slate-700">$20 < d \\le 30$</td><td class="border border-slate-400 px-6 py-1 text-slate-700">10</td></tr>
+                                <tr><td class="border border-slate-400 px-6 py-1 text-slate-700">$30 < d \\le 40$</td><td class="border border-slate-400 px-6 py-1 text-slate-700">8</td></tr>
+                                <tr><td class="border border-slate-400 px-6 py-1 text-slate-700">$40 < d \\le 50$</td><td class="border border-slate-400 px-6 py-1 text-slate-700">5</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="mt-2">Draw a frequency polygon for the information in the table.</p>
                     <div class="my-4 flex justify-center">
-                        <svg width="320" height="180" viewBox="0 0 320 180" class="bg-slate-50 border border-slate-200 rounded-xl shadow-sm">
-                            <polyline points="30,140 80,92 130,40 180,100 230,108 280,120" fill="none" stroke="#005a9c" stroke-width="2.5"/>
-                            <circle cx="80" cy="92" r="4" fill="#dc2626"/>
-                            <circle cx="130" cy="40" r="4" fill="#dc2626"/>
-                            <circle cx="180" cy="100" r="4" fill="#dc2626"/>
-                            <circle cx="230" cy="108" r="4" fill="#dc2626"/>
-                            <circle cx="280" cy="120" r="4" fill="#dc2626"/>
+                        <svg width="360" height="250" viewBox="0 0 360 250" class="bg-white border border-slate-300 rounded-xl shadow-md">
+                            <!-- Grid Background -->
+                            <!-- Vertical lines for d = 0, 10, 20, 30, 40, 50 -->
+                            <line x1="50" y1="20" x2="50" y2="200" stroke="#cbd5e1" stroke-width="1.5"/>
+                            <line x1="105" y1="20" x2="105" y2="200" stroke="#e2e8f0" stroke-width="1"/>
+                            <line x1="160" y1="20" x2="160" y2="200" stroke="#e2e8f0" stroke-width="1"/>
+                            <line x1="215" y1="20" x2="215" y2="200" stroke="#e2e8f0" stroke-width="1"/>
+                            <line x1="270" y1="20" x2="270" y2="200" stroke="#e2e8f0" stroke-width="1"/>
+                            <line x1="325" y1="20" x2="325" y2="200" stroke="#e2e8f0" stroke-width="1"/>
+
+                            <!-- Horizontal lines for Frequency = 0, 10, 20, 30 -->
+                            <line x1="50" y1="200" x2="335" y2="200" stroke="#cbd5e1" stroke-width="2"/>
+                            <line x1="50" y1="140" x2="335" y2="140" stroke="#e2e8f0" stroke-width="1"/>
+                            <line x1="50" y1="80" x2="335" y2="80" stroke="#e2e8f0" stroke-width="1"/>
+                            <line x1="50" y1="20" x2="335" y2="20" stroke="#e2e8f0" stroke-width="1"/>
+
+                            <!-- Plotted Frequency Polygon Segments -->
+                            <!-- Midpoint 5 (x=77.5, y=128), Midpoint 15 (x=132.5, y=50), Midpoint 25 (x=187.5, y=140), Midpoint 35 (x=242.5, y=152), Midpoint 45 (x=297.5, y=170) -->
+                            <polyline points="77.5,128 132.5,50 187.5,140 242.5,152 297.5,170" fill="none" stroke="#005a9c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+                            <!-- Plotted Point Markers (Crosses) -->
+                            <!-- (5, 12) -->
+                            <line x1="72.5" y1="123" x2="82.5" y2="133" stroke="#dc2626" stroke-width="2.5"/>
+                            <line x1="72.5" y1="133" x2="82.5" y2="123" stroke="#dc2626" stroke-width="2.5"/>
+
+                            <!-- (15, 25) -->
+                            <line x1="127.5" y1="45" x2="137.5" y2="55" stroke="#dc2626" stroke-width="2.5"/>
+                            <line x1="127.5" y1="55" x2="137.5" y2="45" stroke="#dc2626" stroke-width="2.5"/>
+
+                            <!-- (25, 10) -->
+                            <line x1="182.5" y1="135" x2="192.5" y2="145" stroke="#dc2626" stroke-width="2.5"/>
+                            <line x1="182.5" y1="145" x2="192.5" y2="135" stroke="#dc2626" stroke-width="2.5"/>
+
+                            <!-- (35, 8) -->
+                            <line x1="237.5" y1="147" x2="247.5" y2="157" stroke="#dc2626" stroke-width="2.5"/>
+                            <line x1="237.5" y1="157" x2="247.5" y2="147" stroke="#dc2626" stroke-width="2.5"/>
+
+                            <!-- (45, 5) -->
+                            <line x1="292.5" y1="165" x2="302.5" y2="175" stroke="#dc2626" stroke-width="2.5"/>
+                            <line x1="292.5" y1="175" x2="302.5" y2="165" stroke="#dc2626" stroke-width="2.5"/>
+
+                            <!-- Axis Tick Labels -->
+                            <text x="45" y="215" font-size="11" font-weight="bold" fill="#475569">0</text>
+                            <text x="98" y="215" font-size="11" font-weight="bold" fill="#475569">10</text>
+                            <text x="153" y="215" font-size="11" font-weight="bold" fill="#475569">20</text>
+                            <text x="208" y="215" font-size="11" font-weight="bold" fill="#475569">30</text>
+                            <text x="263" y="215" font-size="11" font-weight="bold" fill="#475569">40</text>
+                            <text x="318" y="215" font-size="11" font-weight="bold" fill="#475569">50</text>
+
+                            <text x="30" y="204" font-size="11" font-weight="bold" fill="#475569">0</text>
+                            <text x="25" y="144" font-size="11" font-weight="bold" fill="#475569">10</text>
+                            <text x="25" y="84" font-size="11" font-weight="bold" fill="#475569">20</text>
+                            <text x="25" y="24" font-size="11" font-weight="bold" fill="#475569">30</text>
+
+                            <!-- Axis Titles -->
+                            <text x="140" y="238" font-size="12" font-weight="bold" fill="#1e293b">Distance (d miles)</text>
+                            <text x="8" y="110" font-size="11" font-weight="bold" fill="#1e293b" transform="rotate(-90 8,110)">Frequency</text>
                         </svg>
                     </div>
-                    <p>State the midpoint coordinates used to plot the frequency polygon.</p>
+                    <p class="text-xs text-slate-500 italic">State the midpoint coordinates used: (5, 12), (15, 25), (25, 10), (35, 8), (45, 5).</p>
                 `, 
                 pattern: /\(5,12\).*\(15,25\).*\(25,10\).*\(35,8\).*\(45,5\)/i, 
                 solution: "Midpoints: (5, 12), (15, 25), (25, 10), (35, 8), (45, 5)" 
@@ -1189,7 +1312,3 @@
     </script>
 </body>
 </html>
-```eof
-
-### Deployment Reminder
-Commit this `index.html` file into your GitHub repository `GCSE_mth_test`. Render will re-deploy your site automatically in ~20 seconds!
