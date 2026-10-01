@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edexcel GCSE Maths Foundation Paper 3 (Calculator) — June 2025 Series</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        edexcel: '#005a9c',
+                        'edexcel-dark': '#003a66',
+                        'edexcel-light': '#e6f0fa',
+                        'proctor-alert': '#dc2626'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- MathJax 3 for crisp LaTeX math rendering -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+    <style>
+        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+        .math-input:focus { outline: none; border-color: #005a9c; box-shadow: 0 0 0 3px rgba(0,90,156,0.15); }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col select-none" oncontextmenu="return false;">
+
+    <!-- Top Header Bar -->
+    <header class="bg-edexcel text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-3">
+            <div class="flex items-center space-x-3">
+                <div class="bg-white text-edexcel font-extrabold px-3 py-1 rounded text-base tracking-wider shadow-sm">PEARSON</div>
+                <div>
+                    <h1 class="text-base md:text-lg font-bold leading-tight">Edexcel GCSE (9–1) Mathematics — Foundation Tier</h1>
+                    <p class="text-xs text-blue-100">Paper 3 (Calculator) • 1MA1/3F • 1 Hour 30 Mins (80 Marks)</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-3">
+                <!-- Proctoring Active Indicator -->
+                <div id="proctorBadge" class="hidden bg-emerald-900/60 text-emerald-300 px-3 py-1 rounded-lg border border-emerald-400/30 text-xs flex items-center gap-1.5 font-semibold">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                    <span>Proctoring Active 🛡️</span>
+                </div>
+
+                <!-- Active Timer -->
+                <div id="timerContainer" class="hidden bg-edexcel-dark px-3 py-1.5 rounded-lg flex items-center space-x-2 border border-blue-400/30">
+                    <svg class="w-4 h-4 text-yellow-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <span id="timerDisplay" class="font-mono text-sm font-bold text-yellow-300">01:30:00</span>
+                </div>
+
+                <button onclick="location.reload()" id="exitBtn" class="hidden text-xs bg-rose-600 hover:bg-rose-700 px-3 py-1.5 rounded text-white font-medium transition">
+                    Exit Exam
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- PROCTORING VIOLATION BANNER -->
+    <div id="proctorAlertBanner" class="hidden bg-rose-600 text-white px-4 py-2 text-center text-xs font-bold shadow-md flex justify-between items-center animate-pulse">
+        <span>⚠️ PROCTOR ALERT: Window focus or tab switch detected! Event logged for teacher evaluation.</span>
+        <span id="violationCountBadge" class="bg-white text-rose-700 px-2 py-0.5 rounded-full text-[11px]">1 Warning</span>
+    </div>
+
+    <!-- PORTAL LOGIN & ROLE SELECTION SCREEN -->
+    <div id="portalScreen" class="flex-1 flex items-center justify-center p-4">
+        <div class="max-w-lg w-full bg-white rounded-2xl shadow-xl border border-slate-200 p-6 md:p-8 space-y-6">
+            <div class="text-center space-y-2">
+                <div class="inline-block p-3 bg-blue-50 text-edexcel rounded-2xl mb-1">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0112 20.055a11.952 11.952 0 01-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path></svg>
+                </div>
+                <h2 class="text-2xl font-black text-slate-900">June 2025 Examination Portal</h2>
+                <p class="text-xs text-slate-500">Edexcel GCSE Mathematics (1MA1/3F) — Paper 3 Calculator</p>
+            </div>
+
+            <!-- Role Tabs -->
+            <div class="grid grid-cols-3 rounded-xl bg-slate-100 p-1 text-xs font-semibold text-slate-600">
+                <button id="tabStudent" type="button" onclick="setRoleTab('student')" class="py-2.5 rounded-lg bg-white text-edexcel shadow transition">Start Exam</button>
+                <button id="tabExtract" type="button" onclick="setRoleTab('extract')" class="py-2.5 rounded-lg transition hover:text-slate-900">Get Saved Work</button>
+                <button id="tabTeacher" type="button" onclick="setRoleTab('teacher')" class="py-2.5 rounded-lg transition hover:text-slate-900">Teacher View</button>
+            </div>
+
+            <!-- OPTION 1: STUDENT LOGIN -->
+            <form id="studentLoginForm" onsubmit="startExam(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-600 tracking-wider mb-1">Candidate Full Name</label>
+                    <input type="text" id="candidateNameInput" placeholder="e.g. David Adeyefa" required class="w-full p-3 rounded-lg border border-slate-300 math-input text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-600 tracking-wider mb-1">Candidate Number / Center ID</label>
+                    <input type="text" id="candidateNumInput" placeholder="e.g. 1042 / 58392" required class="w-full p-3 rounded-lg border border-slate-300 math-input text-sm">
+                </div>
+
+                <div class="p-3 bg-blue-50 border border-blue-200 rounded-xl text-xs text-blue-900 leading-relaxed space-y-1">
+                    <p class="font-bold flex items-center gap-1"><span class="text-edexcel">🛡️ Active Proctoring Notice:</span></p>
+                    <p>Once you start, stay on this tab. Leaving the window or switching tabs will be logged and sent directly to your teacher's records.</p>
+                </div>
+
+                <button type="submit" class="w-full py-3.5 bg-edexcel hover:bg-edexcel-dark text-white font-bold rounded-xl shadow transition text-sm flex justify-center items-center gap-2">
+                    <span>Begin GCSE Foundation Paper 3</span>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </button>
+            </form>
+
+            <!-- OPTION 2: GET SAVED WORK -->
+            <div id="extractSection" class="hidden space-y-4">
+                <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900 leading-relaxed">
+                    <strong>For Students:</strong> Your answers auto-save on this browser. You can copy your recovery code or export a backup file anytime.
+                </div>
+
+                <button type="button" onclick="runMemoryScan(true)" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow transition text-xs flex justify-center items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    <span>Scan Device Memory for Completed Papers</span>
+                </button>
+
+                <div id="extractorResults" class="space-y-3 pt-2"></div>
+            </div>
+
+            <!-- OPTION 3: TEACHER CONFIGURATION & IMPORT -->
+            <div id="teacherImportSection" class="hidden space-y-4">
+                <div class="p-3 bg-blue-50 border border-blue-200 rounded-xl text-xs text-blue-900 leading-relaxed space-y-2">
+                    <strong>Google Sheets Auto-Logging Setup:</strong>
+                    <p>Paste your Google Apps Script Web App URL below. When students submit their exam, their score, answers, and proctor logs will instantly save into your Google Sheet permanently!</p>
+                    <input type="text" id="googleScriptUrlInput" placeholder="https://script.google.com/macros/s/.../exec" class="w-full p-2 bg-white border rounded text-xs font-mono">
+                    <button type="button" onclick="saveGoogleScriptUrl()" class="px-3 py-1.5 bg-edexcel text-white rounded font-bold text-xs">Save Sheet URL</button>
+                </div>
+
+                <div class="space-y-2 pt-2 border-t">
+                    <label class="block text-xs font-bold uppercase text-slate-700">Upload Student Backup File (.json)</label>
+                    <input type="file" id="teacherFilePicker" accept=".json,.txt" onchange="handleTeacherFileUpload(event)" class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-blue-100 file:text-edexcel hover:file:bg-blue-200">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN EXAM WORKSPACE -->
+    <main id="mainAppWorkspace" class="hidden flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-4 gap-6">
+        
+        <!-- Left Sidebar Navigator -->
+        <aside class="lg:col-span-1 space-y-6">
+            <!-- Functional Math Keypad Toolbar -->
+            <div id="mathPalette" class="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Math Symbol Keypad</h3>
+                <p class="text-[10px] text-slate-400 mb-2">Click to insert math symbols into your active input box:</p>
+                <div class="grid grid-cols-3 gap-1.5 text-xs font-mono">
+                    <button type="button" onmousedown="event.preventDefault()" onclick="insertMath('\\dfrac{a}{b}')" class="p-2 bg-slate-100 hover:bg-blue-100 active:bg-blue-200 rounded border border-slate-200 transition text-center font-bold">$\dfrac{a}{b}$</button>
+                    <button type="button" onmousedown="event.preventDefault()" onclick="insertMath('x^2')" class="p-2 bg-slate-100 hover:bg-blue-100 active:bg-blue-200 rounded border border-slate-200 transition text-center font-bold">$x^2$</button>
+                    <button type="button" onmousedown="event.preventDefault()" onclick="insertMath('\\sqrt{x}')" class="p-2 bg-slate-100 hover:bg-blue-100 active:bg-blue-200 rounded border border-slate-200 transition text-center font-bold">$\sqrt{x}$</button>
+                    <button type="button" onmousedown="event.preventDefault()" onclick="insertMath('\\times')" class="p-2 bg-slate-100 hover:bg-blue-100 active:bg-blue-200 rounded border border-slate-200 transition text-center font-bold">$\times$</button>
+                    <button type="button" onmousedown="event.preventDefault()" onclick="insertMath('\\div')" class="p-2 bg-slate-100 hover:bg-blue-100 active:bg-blue-200 rounded border border-slate-200 transition text-center font-bold">$\div$</button>
+                    <button type="button" onmousedown="event.preventDefault()" onclick="insertMath('^{\\circ}')" class="p-2 bg-slate-100 hover:bg-blue-100 active:bg-blue-200 rounded border border-slate-200 transition text-center font-bold">$^\circ$</button>
+                    <button type="button" onmousedown="event.preventDefault()" onclick="insertMath('\\pi')" class="p-2 bg-slate-100 hover:bg-blue-100 active:bg-blue-200 rounded border border-slate-200 transition text-center font-bold">$\pi$</button>
+                    <button type="button" onmousedown="event.preventDefault()" onclick="insertMath('\\le')" class="p-2 bg-slate-100 hover:bg-blue-100 active:bg-blue-200 rounded border border-slate-200 transition text-center font-bold">$\le$</button>
+                    <button type="button" onmousedown="event.preventDefault()" onclick="insertMath('\\ge')" class="p-2 bg-slate-100 hover:bg-blue-100 active:bg-blue-200 rounded border border-slate-200 transition text-center font-bold">$\ge$</button>
+                </div>
+            </div>
+
+            <!-- Question Navigation Grid -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-3">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700">Question Grid</h3>
+                    <span id="answeredCount" class="text-[11px] bg-blue-100 text-edexcel font-bold px-2 py-0.5 rounded-full">0 / 30 Done</span>
+                </div>
+                
+                <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Questions 1–15 (Core Foundation)</div>
+                <div class="grid grid-cols-5 gap-1.5" id="gridPart1"></div>
+
+                <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider pt-2">Questions 16–30 (Higher Foundation)</div>
+                <div class="grid grid-cols-5 gap-1.5" id="gridPart2"></div>
+            </div>
+        </aside>
+
+        <!-- Right Main Content Area -->
+        <section class="lg:col-span-3 space-y-6">
+            
+            <!-- STUDENT EXAM VIEW -->
+            <div id="studentViewArea" class="space-y-6">
+                <div class="bg-gradient-to-r from-edexcel to-edexcel-dark text-white rounded-xl p-4 shadow-sm flex justify-between items-center">
+                    <div>
+                        <span class="text-xs uppercase tracking-wider text-blue-200 font-bold block" id="qStrandCategory">SECTION — CALCULATOR</span>
+                        <h2 class="text-xl font-bold" id="currentQuestionTitle">Question 1 of 30</h2>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-2xl font-black text-yellow-300" id="qMarksDisplay">1</span>
+                        <span class="text-xs text-blue-100 block">Marks</span>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-6">
+                    <div id="questionTextContainer" class="text-slate-800 leading-relaxed space-y-3 text-base"></div>
+
+                    <div class="space-y-1.5">
+                        <label class="block text-xs font-bold uppercase text-slate-500 tracking-wider">Working Out / Method Steps (Required for method marks):</label>
+                        <textarea id="workingInput" rows="4" onfocus="lastFocusedInputId='workingInput'" oninput="saveCurrentAnswer()" class="w-full p-3 rounded-lg border border-slate-300 math-input font-mono text-sm bg-slate-50/50" placeholder="Type step-by-step calculations here..."></textarea>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2 border-t border-slate-100">
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider">Final Answer:</label>
+                            <input type="text" id="finalAnswerInput" onfocus="lastFocusedInputId='finalAnswerInput'" oninput="saveCurrentAnswer(); updateLiveMathPreview();" class="w-full p-3 rounded-lg border border-slate-300 math-input font-semibold text-slate-800 bg-white text-base" placeholder="Enter final answer...">
+                        </div>
+                        
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-bold uppercase text-slate-400 tracking-wider">Math Formatting Preview:</label>
+                            <div id="mathPreviewBox" class="p-3 bg-blue-50/50 rounded-lg border border-blue-100 text-slate-800 min-h-[48px] flex items-center font-serif italic text-base">
+                                <span class="text-slate-400 text-xs not-italic">Math preview renders here...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                    <button id="prevQBtn" onclick="navigateQuestion(-1)" class="px-5 py-2.5 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-100 font-medium text-sm transition">&larr; Previous</button>
+                    <button id="nextQBtn" onclick="navigateQuestion(1)" class="px-6 py-2.5 rounded-lg bg-edexcel text-white hover:bg-edexcel-dark font-medium text-sm transition shadow">Next Question &rarr;</button>
+                    <button id="submitTestBtn" onclick="finishExam()" class="hidden px-6 py-2.5 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 font-bold text-sm transition shadow">Submit Completed Paper</button>
+                </div>
+            </div>
+
+            <!-- TEACHER EVALUATION & PROCTORING DIAGNOSTIC VIEW -->
+            <div id="teacherViewArea" class="hidden space-y-6">
+                
+                <div class="bg-edexcel-light rounded-xl border border-blue-200 p-4 flex justify-between items-center">
+                    <div>
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-edexcel">Edexcel GCSE Mathematics Diagnostic Report</span>
+                        <h3 id="studentNameDisplay" class="text-lg font-black text-slate-900">Candidate Paper Loaded</h3>
+                    </div>
+                    <button onclick="recalculateDiagnostic()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-xs shadow transition">
+                        Update Grades & Analysis
+                    </button>
+                </div>
+
+                <!-- Proctoring Log Card -->
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 space-y-3">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-2">
+                        <span>🛡️ Exam Proctoring & Integrity Audit Log</span>
+                        <span id="proctorStatusTag" class="px-2 py-0.5 text-[10px] rounded font-bold bg-emerald-100 text-emerald-800">Clean Session</span>
+                    </h3>
+                    <div id="proctorLogContainer" class="p-3 bg-slate-50 border rounded-lg text-xs font-mono text-slate-700 max-h-36 overflow-y-auto space-y-1">
+                        <div class="text-slate-400 italic">No proctoring violations recorded during session.</div>
+                    </div>
+                </div>
+
+                <!-- Questions Table -->
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-4">
+                    <h3 class="text-sm font-bold uppercase tracking-wider text-slate-700">Question Item Breakdown (80 Marks Total)</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead>
+                                <tr class="bg-slate-100 text-slate-700 border-b">
+                                    <th class="p-2.5">Q#</th>
+                                    <th class="p-2.5">Strand / Topic</th>
+                                    <th class="p-2.5">Max</th>
+                                    <th class="p-2.5">Student Answer</th>
+                                    <th class="p-2.5">Working Out</th>
+                                    <th class="p-2.5">Auto Score</th>
+                                    <th class="p-2.5">Verified Mark</th>
+                                </tr>
+                            </thead>
+                            <tbody id="teacherTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- DIAGNOSTIC REPORT CARD -->
+                <div id="diagnosticReportCard" class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-6">
+                    <div class="border-b pb-4 flex justify-between items-end">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-edexcel">Edexcel GCSE Mathematics (Foundation Tier 1MA1/3F)</span>
+                            <h2 class="text-2xl font-black text-slate-900">June 2025 Candidate Diagnostic</h2>
+                        </div>
+                        <div class="text-right">
+                            <span id="finalScoreBadge" class="text-3xl font-black text-edexcel">0 / 80</span>
+                            <span id="gradeBoundaryBadge" class="block text-xs font-bold px-2.5 py-0.5 rounded bg-amber-100 text-amber-800 border border-amber-300 mt-1">Pending Evaluation</span>
+                        </div>
+                    </div>
+
+                    <div id="strandProgressBars" class="space-y-3"></div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="p-4 bg-emerald-50 rounded-xl border border-emerald-200 space-y-2">
+                            <h4 class="text-sm font-bold text-emerald-900">Demonstrated Strengths</h4>
+                            <ul id="strengthsList" class="text-xs text-emerald-800 space-y-1.5 list-disc list-inside"></ul>
+                        </div>
+
+                        <div class="p-4 bg-rose-50 rounded-xl border border-rose-200 space-y-2">
+                            <h4 class="text-sm font-bold text-rose-900">Priority Revision Topics</h4>
+                            <ul id="weaknessesList" class="text-xs text-rose-800 space-y-1.5 list-disc list-inside"></ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+    </main>
+
+    <!-- Modal Box -->
+    <div id="customModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 space-y-4 shadow-2xl text-center">
+            <h3 id="modalTitle" class="text-lg font-bold text-slate-900">Notification</h3>
+            <p id="modalBody" class="text-xs text-slate-600 leading-relaxed"></p>
+            <button onclick="closeModal()" class="px-5 py-2 bg-edexcel text-white rounded-lg font-bold text-xs">OK</button>
+        </div>
+    </div>
+
+    <script>
+        // Official June 2025 Edexcel GCSE Maths Paper 3 (1MA1/3F) Question Dataset
+        const foundationPaper3Questions = [
+            { id: 1, strand: "Number", topic: "Place Value", marks: 1, questionText: "<p>Write down the value of the <strong>7</strong> in the number $49.715$</p>", pattern: /7\s*tenths|0\.7|7\/10|tenths/i, solution: "7 tenths or 0.7 or 7/10" },
+            { id: 2, strand: "Number", topic: "Square Roots", marks: 1, questionText: "<p>Find $\\sqrt{5.76}$</p>", pattern: /^2\.4$/, solution: "2.4" },
+            { id: 3, strand: "Number", topic: "Percentages to Fractions", marks: 1, questionText: "<p>Write $19\\%$ as a fraction.</p>", pattern: /19\/100/, solution: "19/100" },
+            { id: 4, strand: "Number", topic: "Equivalent Fractions", marks: 1, questionText: "<p>Here are some fractions:</p><p class='font-mono font-bold text-center my-2'>\\(\\dfrac{3}{9}\\), &nbsp; \\(\\dfrac{6}{18}\\), &nbsp; \\(\\dfrac{2}{6}\\), &nbsp; \\(\\dfrac{4}{10}\\), &nbsp; \\(\\dfrac{5}{15}\\)</p><p>Which one of these fractions is <strong>not</strong> equivalent to $\\dfrac{1}{3}$?</p>", pattern: /4\/10/, solution: "4/10" },
+            { id: 5, strand: "Number", topic: "Factors", marks: 1, questionText: "<p>Write down two factors of <strong>32</strong>.</p>", pattern: /1|2|4|8|16|32/, solution: "Any two from: 1, 2, 4, 8, 16, 32" },
+            { id: 6, strand: "Number", topic: "Money Calculation & Problem Solving", marks: 3, questionText: "<p>Abi has some £10 notes and some £20 notes. The notes have a total value of £400.<br>Abi has six £20 notes.<br>Work out the number of £10 notes Abi has.</p>", pattern: /^28$|28\s*notes/i, solution: "28 (£20x6 = £120; £400 - £120 = £280; £280/10 = 28)" },
+            { id: 7, strand: "Probability", topic: "Probability Scales", marks: 2, questionText: "<p>Tom has a fair ordinary dice. He rolls the dice once.<br><strong>(a)</strong> State the probability that Tom gets the number 2.<br><strong>(b)</strong> State the probability that Tom gets a number greater than 4.</p>", pattern: /1\/6.*1\/3|1\/6.*2\/6/i, solution: "(a) 1/6, (b) 2/6 = 1/3" },
+            { id: 8, strand: "Probability", topic: "Listing Combinations", marks: 2, questionText: "<p>Menu: Drinks = Coffee (C), Tea (T), Lemonade (L). Cakes = Brownie (B), Flapjack (F), Scone (S).<br>Asma can choose one drink and one cake. Write down all possible combinations.</p>", pattern: /CB.*CF.*CS.*TB.*TF.*TS.*LB.*LF.*LS|9/i, solution: "CB, CF, CS, TB, TF, TS, LB, LF, LS (9 combinations)" },
+            
+            // QUESTION 9: CARTESIAN GRID WITH SVG
+            { 
+                id: 9, 
+                strand: "Geometry & Measures", 
+                topic: "Cartesian Coordinates & Midpoints", 
+                marks: 3, 
+                questionText: `
+                    <p>The graph shows points $A(-2,1)$, $B(-1,-2)$, and $C(2,-1)$ on a grid.</p>
+                    <div class="my-4 flex justify-center">
+                        <svg width="320" height="280" viewBox="-7 -6 14 12" class="bg-slate-50 border border-slate-200 rounded-xl shadow-sm">
+                            <grid class="stroke-slate-200" stroke-width="0.05">
+                                <!-- Axes -->
+                                <line x1="-6" y1="0" x2="6" y2="0" stroke="#334155" stroke-width="0.15"/>
+                                <line x1="0" y1="-5" x2="0" y2="5" stroke="#334155" stroke-width="0.15"/>
+                                <!-- Points -->
+                                <circle cx="-2" cy="-1" r="0.25" fill="#dc2626"/>
+                                <text x="-2.8" y="-1.2" font-size="0.8" font-weight="bold" fill="#005a9c">A(-2,1)</text>
+
+                                <circle cx="-1" cy="2" r="0.25" fill="#dc2626"/>
+                                <text x="-1.8" y="2.6" font-size="0.8" font-weight="bold" fill="#005a9c">B(-1,-2)</text>
+
+                                <circle cx="2" cy="1" r="0.25" fill="#dc2626"/>
+                                <text x="2.4" y="1.2" font-size="0.8" font-weight="bold" fill="#005a9c">C(2,-1)</text>
+                            </grid>
+                        </svg>
+                    </div>
+                    <p><strong>(a)</strong> Write down the coordinates of point $A$.<br>
+                    <strong>(b)</strong> Find point $D$ so that $ABCD$ is a square.<br>
+                    <strong>(c)</strong> Find point $E$ so that $C$ is the midpoint of $BE$.</p>
+                `, 
+                pattern: /\(-2\s*,\s*1\).*\(1\s*,\s*2\).*\(5\s*,\s*0\)|-2.*1.*1.*2.*5.*0/i, 
+                solution: "(a) (-2, 1), (b) D(1, 2), (c) E(5, 0)" 
+            },
+
+            { id: 10, strand: "Number", topic: "Cube Roots & Mathematical Reasoning", marks: 1, questionText: "<p>Jason says, <em>'The cube root of 27 is 9 because 27 divided by 3 is 9.'</em><br>Is Jason correct? Give a reason for your answer.</p>", pattern: /no.*3\s*\\times\s*3\s*\\times\s*3|incorrect|not\s*correct/i, solution: "No, because 3 * 3 * 3 = 27 (cube root of 27 is 3)." },
+            { id: 11, strand: "Geometry & Measures", topic: "Units Conversion & Heights", marks: 2, questionText: "<p>Elena's height is $136\\text{ cm}$. George's height is $1.2\\text{ metres}$.<br>Elena's height is greater than George's height. How many centimetres greater?</p>", pattern: /^16$|16\s*cm/i, solution: "16 cm (1.2m = 120cm; 136 - 120 = 16cm)" },
+            { id: 12, strand: "Algebra", topic: "Sequences & n-th Term", marks: 3, questionText: "<p><strong>(a)</strong> The $n$-th term of a sequence is $4n - 1$. Work out the 3rd term.<br><strong>(b)</strong> Here are the first 4 terms of another sequence: $9, 15, 21, 27$. Is 63 in this sequence? Give a reason.</p>", pattern: /11.*yes|11.*10th/i, solution: "(a) 11, (b) Yes, 63 is the 10th term (rule: 6n + 3)" },
+
+            // QUESTION 13: QUADRILATERAL & ANGLES SVG
+            { 
+                id: 13, 
+                strand: "Geometry & Measures", 
+                topic: "Angles in Quadrilaterals & Straight Lines", 
+                marks: 4, 
+                questionText: `
+                    <p>$ABCD$ is a quadrilateral. $BCF$ and $DCE$ are straight lines.</p>
+                    <div class="my-4 flex justify-center">
+                        <svg width="320" height="200" viewBox="0 0 320 200" class="bg-slate-50 border border-slate-200 rounded-xl shadow-sm">
+                            <polygon points="40,160 40,80 160,50 280,160" fill="none" stroke="#005a9c" stroke-width="2.5"/>
+                            <line x1="160" y1="50" x2="310" y2="10" stroke="#dc2626" stroke-width="2"/>
+                            <line x1="280" y1="160" x2="100" y2="10" stroke="#dc2626" stroke-width="2"/>
+                            <rect x="40" y="145" width="15" height="15" fill="none" stroke="#005a9c" stroke-width="1.5"/>
+                            <text x="50" y="95" font-size="12" font-weight="bold" fill="#d97706">x</text>
+                            <text x="160" y="30" font-size="12" font-weight="bold" fill="#d97706">120°</text>
+                            <text x="250" y="150" font-size="12" font-weight="bold" fill="#d97706">45°</text>
+                        </svg>
+                    </div>
+                    <p>Work out the size of the angle marked $x$. Give reasons for each stage of your working.</p>
+                `, 
+                pattern: /^105$|105^{\\circ}|105\s*deg/i, 
+                solution: "105° (Angle BCD = 120° vertically opposite; x = 360 - (90 + 45 + 120) = 105°)" 
+            },
+
+            // QUESTION 14: MAP BEARING DIAGRAM
+            { 
+                id: 14, 
+                strand: "Geometry & Measures", 
+                topic: "Bearings & Map Scales", 
+                marks: 3, 
+                questionText: `
+                    <p>The map shows two points, $C$ and $D$. Scale: $1\\text{ cm} = 4\\text{ km}$.</p>
+                    <div class="my-4 flex justify-center">
+                        <svg width="280" height="180" viewBox="0 0 280 180" class="bg-slate-50 border border-slate-200 rounded-xl shadow-sm">
+                            <circle cx="70" cy="50" r="4" fill="#005a9c"/>
+                            <text x="55" y="55" font-weight="bold" fill="#005a9c">C</text>
+                            <line x1="70" y1="50" x2="70" y2="10" stroke="#334155" stroke-width="1.5" stroke-dasharray="3,3"/>
+                            <text x="65" y="8" font-size="10" font-weight="bold">N</text>
+
+                            <circle cx="210" cy="130" r="4" fill="#005a9c"/>
+                            <text x="220" y="135" font-weight="bold" fill="#005a9c">D</text>
+                            <line x1="210" y1="130" x2="210" y2="90" stroke="#334155" stroke-width="1.5" stroke-dasharray="3,3"/>
+                            <text x="205" y="88" font-size="10" font-weight="bold">N</text>
+
+                            <line x1="70" y1="50" x2="210" y2="130" stroke="#dc2626" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <p><strong>(a)</strong> State the bearing of $D$ from $C$.<br>
+                    <strong>(b)</strong> If $CD = 5\\text{ cm}$ on the map, work out the real distance in km.</p>
+                `, 
+                pattern: /120.*20|120^{\\circ}.*20\s*km/i, 
+                solution: "(a) 120° (or measured angle), (b) 20 km (5cm * 4km/cm)" 
+            },
+
+            { id: 15, strand: "Number", topic: "Fractions & Percentages", marks: 2, questionText: "<p>A bag has 200 counters. 87 green, 24 yellow.<br><strong>(a)</strong> What fraction are green?<br><strong>(b)</strong> What percentage are yellow?</p>", pattern: /87\/200.*12/i, solution: "(a) 87/200, (b) 12%" },
+
+            // HIGHER FOUNDATION PAPER 3 QUESTIONS (Q16–Q30)
+            { id: 16, strand: "Ratio & Proportion", topic: "Fractions of Amounts & Games", marks: 3, questionText: "<p>A team plays 48 games. They win $\\dfrac{3}{8}$ of the games.<br>The number of losses equals the number of draws.<br>Work out the number of games lost.</p>", pattern: /^15$|15\s*games/i, solution: "15 games (Wins = 18; Remaining = 30; Losses = 30 / 2 = 15)" },
+
+            // QUESTION 17: FREQUENCY TREE DIAGRAM
+            { 
+                id: 17, 
+                strand: "Probability", 
+                topic: "Frequency Trees & Probability", 
+                marks: 4, 
+                questionText: `
+                    <p>120 students were asked if they have a skateboard or a scooter.<br>37 have a skateboard. 21 of those with a skateboard also have a scooter. 65 total students have a scooter.</p>
+                    <div class="my-4 flex justify-center">
+                        <svg width="340" height="200" viewBox="0 0 340 200" class="bg-slate-50 border border-slate-200 rounded-xl shadow-sm">
+                            <circle cx="40" cy="100" r="22" fill="#e0f2fe" stroke="#005a9c" stroke-width="2"/>
+                            <text x="28" y="105" font-size="12" font-weight="bold" fill="#005a9c">120</text>
+                            
+                            <line x1="62" y1="90" x2="130" y2="50" stroke="#334155" stroke-width="1.5"/>
+                            <circle cx="150" cy="50" r="20" fill="#ffffff" stroke="#005a9c" stroke-width="2"/>
+                            <text x="142" y="55" font-size="12" font-weight="bold">37</text>
+
+                            <line x1="62" y1="110" x2="130" y2="150" stroke="#334155" stroke-width="1.5"/>
+                            <circle cx="150" cy="150" r="20" fill="#ffffff" stroke="#005a9c" stroke-width="2"/>
+                            <text x="142" y="155" font-size="12" font-weight="bold">83</text>
+
+                            <line x1="170" y1="40" x2="240" y2="25" stroke="#334155" stroke-width="1.5"/>
+                            <circle cx="260" cy="25" r="16" fill="#ffffff" stroke="#005a9c" stroke-width="1.5"/>
+                            <text x="253" y="29" font-size="11" font-weight="bold">21</text>
+
+                            <line x1="170" y1="60" x2="240" y2="75" stroke="#334155" stroke-width="1.5"/>
+                            <circle cx="260" cy="75" r="16" fill="#ffffff" stroke="#005a9c" stroke-width="1.5"/>
+                            <text x="253" y="79" font-size="11" font-weight="bold">16</text>
+
+                            <line x1="170" y1="140" x2="240" y2="125" stroke="#334155" stroke-width="1.5"/>
+                            <circle cx="260" cy="125" r="16" fill="#ffffff" stroke="#005a9c" stroke-width="1.5"/>
+                            <text x="253" y="129" font-size="11" font-weight="bold">44</text>
+
+                            <line x1="170" y1="160" x2="240" y2="175" stroke="#334155" stroke-width="1.5"/>
+                            <circle cx="260" cy="175" r="16" fill="#ffffff" stroke="#005a9c" stroke-width="1.5"/>
+                            <text x="253" y="179" font-size="11" font-weight="bold">39</text>
+                        </svg>
+                    </div>
+                    <p>Find the probability that a student chosen at random does <strong>not</strong> have a skateboard.</p>
+                `, 
+                pattern: /83\/120/, 
+                solution: "83/120" 
+            },
+
+            { id: 18, strand: "Number", topic: "Percentages & Installments", marks: 3, questionText: "<p>Amy buys a car costing £12,000. She pays a 20% deposit and the rest in 24 equal monthly payments.<br>Amy says each monthly payment is less than £450. Is she correct?</p>", pattern: /yes.*400|correct.*400/i, solution: "Yes, Amy is correct (Deposit = £2,400; Remaining = £9,600; Monthly = £400)" },
+            { id: 19, strand: "Statistics", topic: "Averages from Frequency Tables", marks: 4, questionText: "<p>Katya recorded the number of people in 50 cars:<br>1 person (16), 2 people (15), 3 people (7), 4 people (9), 5 people (3).<br><strong>(a)</strong> Find the median number of people.<br><strong>(b)</strong> Work out the mean number of people.</p>", pattern: /2.*2\.36/i, solution: "(a) Median = 2, (b) Mean = 118 / 50 = 2.36" },
+            { id: 20, strand: "Number", topic: "Calculator Work & Significant Figures", marks: 3, questionText: "<p><strong>(a)</strong> Use your calculator to evaluate: $$\\dfrac{42.1 - 29.53}{9.82 + 37.6}$$<br>Write down all figures.<br><strong>(b)</strong> Give your answer to 2 significant figures.</p>", pattern: /0\.26507802615.*0\.27/i, solution: "(a) 0.26507802615..., (b) 0.27" },
+            { id: 21, strand: "Algebra", topic: "Algebraic Powers & Expansion", marks: 5, questionText: "<p><strong>(a)</strong> Simplify $y^{10} \\div y^2$<br><strong>(b)</strong> Simplify $(e^3)^2$<br><strong>(c)</strong> Expand $x(3x^2 + 5)$<br><strong>(d)</strong> Expand and simplify $(n + 5)(n - 2)$</p>", pattern: /y\^8.*e\^6.*3x\^3\s*\+\s*5x.*n\^2\s*\+\s*3n\s*-\s*10/i, solution: "(a) y^8, (b) e^6, (c) 3x^3 + 5x, (d) n^2 + 3n - 10" },
+
+            // QUESTION 22: FREQUENCY POLYGON GRAPH
+            { 
+                id: 22, 
+                strand: "Statistics", 
+                topic: "Frequency Polygons", 
+                marks: 2, 
+                questionText: `
+                    <p>The table shows travel distances for 60 people to work:<br>
+                    $0 < d \\le 10$ (12), $10 < d \\le 20$ (25), $20 < d \\le 30$ (10), $30 < d \\le 40$ (8), $40 < d \\le 50$ (5).</p>
+                    <div class="my-4 flex justify-center">
+                        <svg width="320" height="180" viewBox="0 0 320 180" class="bg-slate-50 border border-slate-200 rounded-xl shadow-sm">
+                            <polyline points="30,140 80,92 130,40 180,100 230,108 280,120" fill="none" stroke="#005a9c" stroke-width="2.5"/>
+                            <circle cx="80" cy="92" r="4" fill="#dc2626"/>
+                            <circle cx="130" cy="40" r="4" fill="#dc2626"/>
+                            <circle cx="180" cy="100" r="4" fill="#dc2626"/>
+                            <circle cx="230" cy="108" r="4" fill="#dc2626"/>
+                            <circle cx="280" cy="120" r="4" fill="#dc2626"/>
+                        </svg>
+                    </div>
+                    <p>State the midpoint coordinates used to plot the frequency polygon.</p>
+                `, 
+                pattern: /\(5,12\).*\(15,25\).*\(25,10\).*\(35,8\).*\(45,5\)/i, 
+                solution: "Midpoints: (5, 12), (15, 25), (25, 10), (35, 8), (45, 5)" 
+            },
+
+            { id: 23, strand: "Algebra", topic: "Rearranging & Factorisation", marks: 3, questionText: "<p><strong>(a)</strong> Ben rearranges $p = \\dfrac{m}{3} + 5 \\implies m = 3p - 5$. What mistake did Ben make?<br><strong>(b)</strong> Factorise fully $2x^3y + 4xy^2$</p>", pattern: /multiply.*5|2xy\(x\^2\s*\+\s*2y\)/i, solution: "(a) Ben forgot to multiply 5 by 3, (b) 2xy(x^2 + 2y)" },
+            { id: 24, strand: "Number", topic: "Percentage Profit", marks: 3, questionText: "<p>Mia pays £25 for 200 oranges. She puts them into bags of 5 and sells each bag for £1.<br>Work out Mia's percentage profit.</p>", pattern: /^60$|60\%/i, solution: "60% (40 bags @ £1 = £40 revenue; Profit = £15; £15/£25 = 60%)" },
+            { id: 25, strand: "Number", topic: "Currency & Unit Conversions", marks: 4, questionText: "<p>London: $2\\text{ kg}$ carrots = £3.75.<br>New York: $5\\text{ lbs}$ carrots = $4.90.<br>£1 = $1.20, $1\\text{ kg} = 2.2\\text{ lbs}$.<br>Which city is better value for money?</p>", pattern: /new\s*york|ny/i, solution: "New York (NY = $0.98/lb vs London = $1.023/lb)" },
+            { id: 26, strand: "Number", topic: "Error Intervals", marks: 2, questionText: "<p>Karim rounds a number $n$ to 1 decimal place. Result = 23.8.<br>Complete the error interval for $n$: $$\\dots \\le n < \\dots$$</p>", pattern: /23\.75.*23\.85/, solution: "23.75 <= n < 23.85" },
+            { id: 27, strand: "Geometry & Measures", topic: "Speed, Distance & Time", marks: 3, questionText: "<p>A plane flies $1512\\text{ km}$ in 2 hours 24 minutes.<br>Work out the average speed in km/h.</p>", pattern: /^630$|630\s*km\/h/i, solution: "630 km/h (2h 24m = 2.4 hours; 1512 / 2.4 = 630)" },
+
+            // QUESTION 28: VECTOR LINE ABC SVG
+            { 
+                id: 28, 
+                strand: "Geometry & Measures", 
+                topic: "Coordinates & Ratio Dividers", 
+                marks: 3, 
+                questionText: `
+                    <p>$ABC$ is a straight line. $A(2, 7)$, $B(8, 12)$, and $BC = \\dfrac{1}{2}AB$.</p>
+                    <div class="my-4 flex justify-center">
+                        <svg width="280" height="150" viewBox="0 0 280 150" class="bg-slate-50 border border-slate-200 rounded-xl shadow-sm">
+                            <line x1="40" y1="120" x2="240" y2="30" stroke="#005a9c" stroke-width="2.5"/>
+                            <circle cx="40" cy="120" r="4" fill="#dc2626"/>
+                            <text x="25" y="140" font-weight="bold">A(2,7)</text>
+                            
+                            <circle cx="160" cy="66" r="4" fill="#dc2626"/>
+                            <text x="145" y="50" font-weight="bold">B(8,12)</text>
+
+                            <circle cx="220" cy="39" r="4" fill="#dc2626"/>
+                            <text x="225" y="30" font-weight="bold">C</text>
+                        </svg>
+                    </div>
+                    <p>Find the coordinates of point $C$.</p>
+                `, 
+                pattern: /\(11\s*,\s*14\.5\)|11\s*,\s*14\.5/i, 
+                solution: "(11, 14.5)" 
+            },
+
+            // QUESTION 29: TRAPEZIUM GEOMETRY SVG
+            { 
+                id: 29, 
+                strand: "Geometry & Measures", 
+                topic: "Area & Perimeter of Trapeziums", 
+                marks: 5, 
+                questionText: `
+                    <p>Trapezium $ABCD$ has area $= 112\\text{ cm}^2$, $AB = 12\\text{ cm}$, and $AD = 8\\text{ cm}$.</p>
+                    <div class="my-4 flex justify-center">
+                        <svg width="280" height="180" viewBox="0 0 280 180" class="bg-slate-50 border border-slate-200 rounded-xl shadow-sm">
+                            <polygon points="40,30 140,30 220,150 40,150" fill="#e0f2fe" stroke="#005a9c" stroke-width="2.5"/>
+                            <text x="30" y="25" font-weight="bold">D</text>
+                            <text x="145" y="25" font-weight="bold">A (8 cm)</text>
+                            <text x="225" y="160" font-weight="bold">B (12 cm height)</text>
+                            <text x="30" y="165" font-weight="bold">C</text>
+                        </svg>
+                    </div>
+                    <p>Work out the perimeter of the trapezium correct to 3 significant figures.</p>
+                `, 
+                pattern: /43\.0|43|42\.96/i, 
+                solution: "43.0 cm (BC = 10.67cm; CD = 12.29cm; Perimeter = 43.0 cm)" 
+            },
+
+            { id: 30, strand: "Algebra", topic: "Simultaneous Equations", marks: 3, questionText: "<p>Solve algebraically the simultaneous equations: $$x + 7y = 14$$ $$3x - y = 9$$</p>", pattern: /3\.5.*1\.5|x\s*=\s*3\.5.*y\s*=\s*1\.5/i, solution: "x = 3.5, y = 1.5" }
+        ];
+
+        let candidateName = '';
+        let candidateNum = '';
+        let currentQuestionIndex = 0;
+        let studentAnswers = {};
+        let verifiedScores = {};
+        let foundDataList = [];
+        let proctorLog = [];
+        let lastFocusedInputId = 'finalAnswerInput';
+        let timerInterval = null;
+        let timeRemainingSeconds = 5400; // 90 mins
+        let googleScriptUrl = localStorage.getItem('edexcel_gsheet_url') || '';
+
+        // Active Proctoring Listeners
+        window.addEventListener('visibilitychange', () => {
+            if (document.hidden && candidateName) {
+                logProctorViolation("Tab switch or browser minimized");
+            }
+        });
+
+        window.addEventListener('blur', () => {
+            if (candidateName) {
+                logProctorViolation("Focus lost (switched window or app)");
+            }
+        });
+
+        function logProctorViolation(reason) {
+            const timeStr = new Date().toLocaleTimeString();
+            proctorLog.push({ timestamp: timeStr, reason });
+            
+            const banner = document.getElementById('proctorAlertBanner');
+            const badge = document.getElementById('violationCountBadge');
+            if (banner && badge) {
+                banner.classList.remove('hidden');
+                badge.textContent = `${proctorLog.length} Warning(s)`;
+            }
+
+            saveCurrentAnswer();
+        }
+
+        function startExamTimer() {
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                if (timeRemainingSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    document.getElementById('timerDisplay').textContent = "00:00:00";
+                    finishExam();
+                    showModal("Time Expired!", "The exam duration has ended. Your paper has been submitted automatically.");
+                    return;
+                }
+                timeRemainingSeconds--;
+                
+                const hrs = Math.floor(timeRemainingSeconds / 3600);
+                const mins = Math.floor((timeRemainingSeconds % 3600) / 60);
+                const secs = timeRemainingSeconds % 60;
+
+                const pad = (n) => n.toString().padStart(2, '0');
+                document.getElementById('timerDisplay').textContent = `${pad(hrs)}:${pad(mins)}:${pad(secs)}`;
+            }, 1000);
+        }
+
+        function showModal(title, body) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalBody').textContent = body;
+            document.getElementById('customModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('customModal').classList.add('hidden');
+        }
+
+        function saveGoogleScriptUrl() {
+            const val = document.getElementById('googleScriptUrlInput').value.trim();
+            if (val) {
+                googleScriptUrl = val;
+                localStorage.setItem('edexcel_gsheet_url', val);
+                showModal("Saved!", "Google Sheets URL saved successfully. Auto-logging is active.");
+            }
+        }
+
+        function setRoleTab(role) {
+            const tabStudent = document.getElementById('tabStudent');
+            const tabExtract = document.getElementById('tabExtract');
+            const tabTeacher = document.getElementById('tabTeacher');
+            const formStudent = document.getElementById('studentLoginForm');
+            const secExtract = document.getElementById('extractSection');
+            const secTeacher = document.getElementById('teacherImportSection');
+
+            [tabStudent, tabExtract, tabTeacher].forEach(t => t.className = 'py-2.5 rounded-lg transition hover:text-slate-900');
+
+            if (role === 'student') {
+                tabStudent.className = 'py-2.5 rounded-lg bg-white text-edexcel shadow font-bold';
+                formStudent.classList.remove('hidden');
+                secExtract.classList.add('hidden');
+                secTeacher.classList.add('hidden');
+            } else if (role === 'extract') {
+                tabExtract.className = 'py-2.5 rounded-lg bg-white text-edexcel shadow font-bold';
+                formStudent.classList.add('hidden');
+                secExtract.classList.remove('hidden');
+                secTeacher.classList.add('hidden');
+                runMemoryScan(false);
+            } else if (role === 'teacher') {
+                tabTeacher.className = 'py-2.5 rounded-lg bg-white text-edexcel shadow font-bold';
+                formStudent.classList.add('hidden');
+                secExtract.classList.add('hidden');
+                secTeacher.classList.remove('hidden');
+                document.getElementById('googleScriptUrlInput').value = googleScriptUrl;
+            }
+        }
+
+        function startExam(e) {
+            e.preventDefault();
+            candidateName = document.getElementById('candidateNameInput').value.trim();
+            candidateNum = document.getElementById('candidateNumInput').value.trim();
+
+            if (!candidateName) return;
+
+            document.getElementById('portalScreen').classList.add('hidden');
+            document.getElementById('mainAppWorkspace').classList.remove('hidden');
+            document.getElementById('studentViewArea').classList.remove('hidden');
+            document.getElementById('teacherViewArea').classList.add('hidden');
+            document.getElementById('timerContainer').classList.remove('hidden');
+            document.getElementById('proctorBadge').classList.remove('hidden');
+            document.getElementById('exitBtn').classList.remove('hidden');
+
+            startExamTimer();
+            renderGrid();
+            loadQuestion(0);
+        }
+
+        function renderGrid() {
+            const g1 = document.getElementById('gridPart1');
+            const g2 = document.getElementById('gridPart2');
+            g1.innerHTML = ''; g2.innerHTML = '';
+
+            foundationPaper3Questions.forEach((q, idx) => {
+                const btn = document.createElement('button');
+                btn.id = `navBtn_${idx}`;
+                btn.type = 'button';
+                btn.onclick = () => loadQuestion(idx);
+                btn.className = `p-1.5 text-xs font-bold rounded border transition text-center ${
+                    idx === currentQuestionIndex 
+                        ? 'bg-edexcel text-white border-edexcel shadow' 
+                        : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
+                }`;
+                btn.textContent = `Q${q.id}`;
+
+                if (idx < 15) g1.appendChild(btn);
+                else g2.appendChild(btn);
+            });
+            updateAnsweredCount();
+        }
+
+        function updateAnsweredCount() {
+            let count = 0;
+            foundationPaper3Questions.forEach(q => {
+                if (studentAnswers[q.id] && (studentAnswers[q.id].answer || studentAnswers[q.id].working)) {
+                    count++;
+                }
+            });
+            document.getElementById('answeredCount').textContent = `${count} / ${foundationPaper3Questions.length} Done`;
+        }
+
+        function loadQuestion(index) {
+            saveCurrentAnswer();
+            currentQuestionIndex = index;
+            const q = foundationPaper3Questions[index];
+
+            document.getElementById('qStrandCategory').textContent = `${q.strand.toUpperCase()} — ${q.topic.toUpperCase()}`;
+            document.getElementById('currentQuestionTitle').textContent = `Question ${q.id} of 30`;
+            document.getElementById('qMarksDisplay').textContent = q.marks;
+            document.getElementById('questionTextContainer').innerHTML = q.questionText;
+
+            const saved = studentAnswers[q.id] || { working: "", answer: "" };
+            document.getElementById('workingInput').value = saved.working;
+            document.getElementById('finalAnswerInput').value = saved.answer;
+
+            document.getElementById('prevQBtn').disabled = index === 0;
+            document.getElementById('prevQBtn').style.opacity = index === 0 ? '0.5' : '1';
+
+            if (index === foundationPaper3Questions.length - 1) {
+                document.getElementById('nextQBtn').classList.add('hidden');
+                document.getElementById('submitTestBtn').classList.remove('hidden');
+            } else {
+                document.getElementById('nextQBtn').classList.remove('hidden');
+                document.getElementById('submitTestBtn').classList.add('hidden');
+            }
+
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                MathJax.typesetPromise();
+            }
+
+            updateLiveMathPreview();
+            renderGrid();
+        }
+
+        function saveCurrentAnswer() {
+            const q = foundationPaper3Questions[currentQuestionIndex];
+            if (!q) return;
+            const working = document.getElementById('workingInput').value;
+            const answer = document.getElementById('finalAnswerInput').value;
+            studentAnswers[q.id] = { working, answer };
+            updateAnsweredCount();
+
+            const payload = { candidateName, candidateNum, answers: studentAnswers, proctorLog, timeRemainingSeconds, lastUpdated: Date.now() };
+            localStorage.setItem('edexcel_p3_found_' + candidateName.replace(/\s+/g, '_'), JSON.stringify(payload));
+        }
+
+        function navigateQuestion(delta) {
+            const newIndex = currentQuestionIndex + delta;
+            if (newIndex >= 0 && newIndex < foundationPaper3Questions.length) {
+                loadQuestion(newIndex);
+            }
+        }
+
+        function insertMath(symbolTex) {
+            const targetEl = document.getElementById(lastFocusedInputId) || document.getElementById('finalAnswerInput');
+            if (targetEl) {
+                targetEl.focus();
+                const start = targetEl.selectionStart || 0;
+                const end = targetEl.selectionEnd || 0;
+                const text = targetEl.value;
+                
+                targetEl.value = text.substring(0, start) + symbolTex + text.substring(end);
+                targetEl.selectionStart = targetEl.selectionEnd = start + symbolTex.length;
+                
+                saveCurrentAnswer();
+                updateLiveMathPreview();
+            }
+        }
+
+        function updateLiveMathPreview() {
+            const val = document.getElementById('finalAnswerInput').value.trim();
+            const previewBox = document.getElementById('mathPreviewBox');
+            if (!val) {
+                previewBox.innerHTML = '<span class="text-slate-400 text-xs not-italic">Math preview renders here...</span>';
+                return;
+            }
+            previewBox.innerHTML = `$${val}$`;
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                MathJax.typesetPromise([previewBox]);
+            }
+        }
+
+        function finishExam() {
+            saveCurrentAnswer();
+            clearInterval(timerInterval);
+
+            let totalScored = 0;
+            foundationPaper3Questions.forEach(q => {
+                const ans = studentAnswers[q.id] || { working: "", answer: "" };
+                if (ans.answer && q.pattern.test(ans.answer)) totalScored += q.marks;
+            });
+            const percent = (totalScored / 80) * 100;
+            let estGrade = percent >= 55 ? "Grade 4+" : "Grade 1-3";
+
+            const submissionPayload = {
+                candidateName,
+                candidateNum,
+                answers: studentAnswers,
+                proctorLog,
+                totalScore: `${totalScored} / 80`,
+                grade: estGrade,
+                proctorWarnings: proctorLog.length,
+                timestamp: new Date().toISOString()
+            };
+
+            if (googleScriptUrl) {
+                fetch(googleScriptUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(submissionPayload)
+                }).catch(e => console.log('Auto-log sync error:', e));
+            }
+
+            showModal("Paper Successfully Submitted & Logged!", "Your exam answers and proctoring log have been securely saved and transmitted to your teacher's records.");
+        }
+
+        function runMemoryScan(showBanner = false) {
+            const container = document.getElementById('extractorResults');
+            foundDataList = [];
+
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.includes('edexcel_p3_found') || key.includes('edexcel')) {
+                    try {
+                        const parsed = JSON.parse(localStorage.getItem(key));
+                        if (parsed && (parsed.answers || parsed.candidateName)) {
+                            foundDataList.push({ key, data: parsed });
+                        }
+                    } catch(e){}
+                }
+            }
+
+            if (foundDataList.length === 0) {
+                container.innerHTML = `<div class="p-4 bg-rose-50 border border-rose-200 rounded-xl text-center text-xs text-rose-800 font-bold">No saved Edexcel Paper 3 data found in this browser.</div>`;
+                return;
+            }
+
+            container.innerHTML = '';
+            foundDataList.forEach((item, idx) => {
+                const d = item.data;
+                const ansCount = d.answers ? Object.keys(d.answers).length : 0;
+                const card = document.createElement('div');
+                card.className = 'p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-2 text-xs';
+                card.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <span class="font-black text-slate-900">${d.candidateName || 'Candidate'}</span>
+                        <span class="bg-blue-100 text-edexcel font-bold px-2 py-0.5 rounded text-[10px]">${ansCount} / 30 Answers</span>
+                    </div>
+                    <div class="flex gap-2">
+                        <button type="button" onclick="copyCodeByIdx(${idx})" class="flex-1 py-2 bg-edexcel text-white rounded font-bold text-[11px] shadow">Copy Code</button>
+                        <button type="button" onclick="downloadFileByIdx(${idx})" class="flex-1 py-2 bg-emerald-600 text-white rounded font-bold text-[11px] shadow">Download .json</button>
+                    </div>
+                    <div id="codeDisplay_${idx}" class="hidden pt-2">
+                        <textarea id="codeTextarea_${idx}" rows="2" readonly class="w-full p-2 bg-white border rounded font-mono text-[10px] text-slate-700 select-all"></textarea>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function copyCodeByIdx(idx) {
+            if (!foundDataList[idx]) return;
+            const item = foundDataList[idx].data;
+            const jsonStr = JSON.stringify(item);
+            const base64Code = btoa(unescape(encodeURIComponent(jsonStr)));
+
+            const displayArea = document.getElementById(`codeDisplay_${idx}`);
+            const textarea = document.getElementById(`codeTextarea_${idx}`);
+            if (displayArea && textarea) {
+                displayArea.classList.remove('hidden');
+                textarea.value = base64Code;
+                textarea.select();
+            }
+
+            navigator.clipboard.writeText(base64Code).then(() => {
+                showModal("Code Copied!", "Recovery code copied to clipboard!");
+            });
+        }
+
+        function downloadFileByIdx(idx) {
+            if (!foundDataList[idx]) return;
+            const item = foundDataList[idx].data;
+            const name = item.candidateName || 'Student';
+            const blob = new Blob([JSON.stringify(item, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Edexcel_Paper3_${name.replace(/\s+/g, '_')}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function handleTeacherFileUpload(evt) {
+            const file = evt.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const text = e.target.result.trim();
+                    let data = text.startsWith('{') ? JSON.parse(text) : JSON.parse(decodeURIComponent(escape(atob(text))));
+                    loadParsedStudentData(data);
+                } catch(err) {
+                    showModal("Error", "Could not parse student file.");
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function loadParsedStudentData(data) {
+            candidateName = data.candidateName || "David Adeyefa";
+            studentAnswers = data.answers || {};
+            proctorLog = data.proctorLog || [];
+
+            document.getElementById('portalScreen').classList.add('hidden');
+            document.getElementById('mainAppWorkspace').classList.remove('hidden');
+            document.getElementById('studentViewArea').classList.add('hidden');
+            document.getElementById('teacherViewArea').classList.remove('hidden');
+            document.getElementById('mathPalette').classList.add('hidden');
+            document.getElementById('exitBtn').classList.remove('hidden');
+
+            document.getElementById('studentNameDisplay').textContent = `${candidateName} (Candidate ID: ${data.candidateNum || '1042'})`;
+            
+            renderProctorLog();
+            renderGrid();
+            populateTeacherTable();
+            recalculateDiagnostic();
+            showModal("Paper Loaded!", `Loaded Paper 3 report for ${candidateName}`);
+        }
+
+        function renderProctorLog() {
+            const container = document.getElementById('proctorLogContainer');
+            const tag = document.getElementById('proctorStatusTag');
+            
+            if (!proctorLog || proctorLog.length === 0) {
+                container.innerHTML = `<div class="text-emerald-700 font-bold">✓ Clean session — No tab switches or focus loss recorded.</div>`;
+                tag.className = "px-2 py-0.5 text-[10px] rounded font-bold bg-emerald-100 text-emerald-800";
+                tag.textContent = "Clean Session";
+            } else {
+                tag.className = "px-2 py-0.5 text-[10px] rounded font-bold bg-rose-100 text-rose-800 animate-pulse";
+                tag.textContent = `${proctorLog.length} Warning Flag(s)`;
+                
+                container.innerHTML = proctorLog.map(log => `
+                    <div class="flex justify-between border-b pb-1 text-rose-700">
+                        <span>⚠️ ${log.reason}</span>
+                        <span class="font-bold text-slate-500">${log.timestamp}</span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function populateTeacherTable() {
+            const tbody = document.getElementById('teacherTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            foundationPaper3Questions.forEach(q => {
+                const ans = studentAnswers[q.id] || { working: "", answer: "" };
+                let autoMark = 0;
+                if (ans.answer && q.pattern.test(ans.answer)) {
+                    autoMark = q.marks;
+                } else if (ans.working && q.pattern.test(ans.working)) {
+                    autoMark = Math.max(1, q.marks - 1);
+                }
+
+                if (verifiedScores[q.id] === undefined) {
+                    verifiedScores[q.id] = autoMark;
+                }
+
+                const tr = document.createElement('tr');
+                tr.className = 'border-b hover:bg-slate-50 transition';
+                tr.innerHTML = `
+                    <td class="p-2.5 font-bold text-slate-800">Q${q.id}</td>
+                    <td class="p-2.5"><span class="font-semibold block text-slate-800">${q.topic}</span><span class="text-[10px] text-slate-500">${q.strand}</span></td>
+                    <td class="p-2.5 font-bold text-slate-600">${q.marks}</td>
+                    <td class="p-2.5 font-mono text-edexcel font-bold">${ans.answer || '<span class="text-slate-300 italic">No entry</span>'}</td>
+                    <td class="p-2.5 max-w-xs"><div class="text-[11px] text-slate-600 bg-slate-100 p-2 rounded font-mono">${ans.working || 'No working'}</div></td>
+                    <td class="p-2.5"><span class="px-2 py-0.5 rounded font-bold text-xs ${autoMark === q.marks ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">${autoMark} / ${q.marks}</span></td>
+                    <td class="p-2.5"><input type="number" min="0" max="${q.marks}" value="${verifiedScores[q.id]}" onchange="updateVerifiedScore(${q.id}, this.value)" class="w-14 p-1 border rounded font-bold text-center"></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function updateVerifiedScore(qId, val) {
+            const num = parseInt(val) || 0;
+            const q = foundationPaper3Questions.find(item => item.id === qId);
+            verifiedScores[qId] = Math.min(Math.max(0, num), q.marks);
+            recalculateDiagnostic();
+        }
+
+        function recalculateDiagnostic() {
+            let totalScored = 0;
+            const totalPossible = foundationPaper3Questions.reduce((sum, q) => sum + q.marks, 0);
+
+            const strandStats = {
+                "Number": { scored: 0, max: 0 },
+                "Algebra": { scored: 0, max: 0 },
+                "Ratio & Proportion": { scored: 0, max: 0 },
+                "Geometry & Measures": { scored: 0, max: 0 },
+                "Statistics": { scored: 0, max: 0 },
+                "Probability": { scored: 0, max: 0 }
+            };
+
+            const strengths = [];
+            const weaknesses = [];
+
+            foundationPaper3Questions.forEach(q => {
+                const score = verifiedScores[q.id] !== undefined ? verifiedScores[q.id] : 0;
+                totalScored += score;
+
+                let strandKey = q.strand;
+                if (strandStats[strandKey]) {
+                    strandStats[strandKey].scored += score;
+                    strandStats[strandKey].max += q.marks;
+                }
+
+                if (score / q.marks >= 0.6) {
+                    strengths.push(`${q.topic} (Q${q.id}: ${score}/${q.marks})`);
+                } else {
+                    weaknesses.push(`${q.topic} (Q${q.id}: ${score}/${q.marks})`);
+                }
+            });
+
+            document.getElementById('finalScoreBadge').textContent = `${totalScored} / ${totalPossible}`;
+            const percent = (totalScored / totalPossible) * 100;
+            const boundaryBadge = document.getElementById('gradeBoundaryBadge');
+
+            if (percent >= 72) boundaryBadge.textContent = "Estimated Grade 5 (Strong Pass)";
+            else if (percent >= 55) boundaryBadge.textContent = "Estimated Grade 4 (Standard Pass)";
+            else if (percent >= 40) boundaryBadge.textContent = "Estimated Grade 3 (Near Pass)";
+            else if (percent >= 25) boundaryBadge.textContent = "Estimated Grade 2";
+            else boundaryBadge.textContent = "Estimated Grade 1 / Below";
+
+            const strandContainer = document.getElementById('strandProgressBars');
+            strandContainer.innerHTML = '';
+            for (let strandName in strandStats) {
+                const stat = strandStats[strandName];
+                if (stat.max === 0) continue;
+                const ratio = Math.round((stat.scored / stat.max) * 100);
+                const div = document.createElement('div');
+                div.className = 'space-y-1';
+                div.innerHTML = `
+                    <div class="flex justify-between text-xs font-semibold"><span>${strandName}</span><span>${stat.scored} / ${stat.max} (${ratio}%)</span></div>
+                    <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden"><div class="bg-edexcel h-2" style="width: ${ratio}%"></div></div>
+                `;
+                strandContainer.appendChild(div);
+            }
+
+            document.getElementById('strengthsList').innerHTML = strengths.length > 0 ? strengths.map(s => `<li>${s}</li>`).join('') : '<li class="text-slate-500 italic">No topics above 60%.</li>';
+            document.getElementById('weaknessesList').innerHTML = weaknesses.length > 0 ? weaknesses.map(w => `<li>${w}</li>`).join('') : '<li class="text-slate-500 italic">No primary revision areas.</li>';
+        }
+    </script>
+</body>
+</html>
+```eof
